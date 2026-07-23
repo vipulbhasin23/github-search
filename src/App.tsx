@@ -45,9 +45,12 @@ function App() {
       }
     }
 
-    fetchUsers()
+    const timeoutId = setTimeout(fetchUsers, 300)
 
-    return () => controller.abort()
+    return () => {
+      clearTimeout(timeoutId)
+      controller.abort()
+    }
   }, [query])
 
   return (
