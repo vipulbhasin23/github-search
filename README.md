@@ -1,3 +1,5 @@
+[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://vipulbhasin23.github.io/github-search/)
+
 # GitHub User Search
 
 A small React + TypeScript app for searching GitHub users, built as a hands-on refresher project after several years away from front-end development — rebuilding core patterns from scratch, from `useState`/`useEffect` through custom hooks, memoization, and Context, committed incrementally rather than generated all at once.
