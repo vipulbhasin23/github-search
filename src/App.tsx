@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import useDebounce from './hooks/useDebounce'
 import './App.css'
 
 interface GitHubUser {
@@ -10,12 +11,13 @@ interface GitHubUser {
 
 function App() {
   const [query, setQuery] = useState<string>('')
+  const debouncedQuery = useDebounce(query, 300)
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
   const [results, setResults] = useState<GitHubUser[]>([])
 
   useEffect(() => {
-    if (query.trim() === '') {
+    if (debouncedQuery.trim() === '') {
       setResults([])
       return
     }
@@ -28,7 +30,7 @@ function App() {
 
       try {
         const response = await fetch(
-          `https://api.github.com/search/users?q=${encodeURIComponent(query)}`,
+          `https://api.github.com/search/users?q=${encodeURIComponent(debouncedQuery)}`,
           { signal: controller.signal },
         )
         if (!response.ok) {
@@ -45,13 +47,10 @@ function App() {
       }
     }
 
-    const timeoutId = setTimeout(fetchUsers, 300)
+    fetchUsers()
 
-    return () => {
-      clearTimeout(timeoutId)
-      controller.abort()
-    }
-  }, [query])
+    return () => controller.abort()
+  }, [debouncedQuery])
 
   return (
     <main id="search">
