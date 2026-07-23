@@ -1,4 +1,6 @@
-[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://vipulbhasin23.github.io/github-search/)
+🔗 **[Live Demo](https://vipulbhasin23.github.io/github-search/)**
+
+# GitHub User Search
 
 # GitHub User Search
 
