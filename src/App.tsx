@@ -51,7 +51,7 @@ function App() {
   }, [query])
 
   return (
-    <main>
+    <main id="search">
       <h1>GitHub Search</h1>
       <input
         type="text"
@@ -61,9 +61,9 @@ function App() {
       />
 
       {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      {error && <p className="error">{error}</p>}
 
-      <ul>
+      <ul className="results">
         {results.map((user) => (
           <li key={user.id}>
             <img src={user.avatar_url} width="32" height="32" alt="" />
