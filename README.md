@@ -7,8 +7,8 @@ A small React + TypeScript app for searching GitHub users, built as a hands-on r
 This repo is being built step by step, with each stage adding a specific concept. Commit history reflects that progression rather than a single finished drop.
 
 - [x] Basic search with `useState` + `useEffect` (fetch GitHub users on input change), typed from the start
-- [ ] Debounced input via a custom `useDebounce` hook
-- [ ] Request cancellation / race-condition handling with `AbortController` in an effect cleanup
+- [x] Debounced input via a custom `useDebounce` hook
+- [x] Request cancellation / race-condition handling with `AbortController` in an effect cleanup
 - [ ] Client-side filtering with `useMemo`, callback stability with `useCallback`
 - [ ] Global "favorites" state via React Context + a custom `useFavorites` hook
 
