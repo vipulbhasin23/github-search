@@ -6,7 +6,7 @@ debounced search, request cancellation, and a favorites system.
 ## Status
 
 - [x] Project scaffolding (Vite + React + TS + ESLint)
-- [] Basic search (fetch + display results)
+- [x] Basic search (fetch + display results)
 - [] Debounce hook
 - [] Request cancellation (AbortController)
 - [] Performance optimization (useMemo/useCallback)
@@ -20,3 +20,7 @@ cd github-search
 npm install
 npm run dev
 ```
+
+## Design notes
+
+See [DECISIONS.md](./DECISIONS.md) for tradeoffs and reasoning as they come up.
