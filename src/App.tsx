@@ -1,19 +1,7 @@
 import { useState, useEffect } from "react";
 import SearchInput from "./SearchInput.tsx";
-
-interface GitHubRepo {
-  id: number;
-  full_name: string;
-  html_url: string;
-  description: string | null;
-  stargazers_count: number;
-  language: string | null;
-}
-
-interface GitHubSearchResponse {
-  total_count: number;
-  items: GitHubRepo[];
-}
+import SearchResults from "./SearchResults.tsx";
+import type { GitHubRepo, GitHubSearchResponse } from "./types.ts";
 
 function App() {
   const [query, setQuery] = useState("");
@@ -41,7 +29,14 @@ function App() {
       .finally(() => setLoading(false));
   }, [query]);
 
-  return <SearchInput query={query} onQueryChange={setQuery} />;
+  return (
+    <>
+      <SearchInput query={query} onQueryChange={setQuery} />
+      {query.trim() !== "" && (
+        <SearchResults results={results} loading={loading} err={error} />
+      )}
+    </>
+  );
 }
 
 export default App;
