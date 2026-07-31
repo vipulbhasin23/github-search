@@ -19,8 +19,8 @@ export default function SearchResults({
       {results.map((r) => (
         <li key={r.id}>
           <a href={r.html_url}>{r.full_name}</a>
-          <p>Description: {r.description}</p>
-          <p>Language: {r.language}</p>
+          <p>Description: {r.description ?? "No description"}</p>
+          <p>Language: {r.language ?? "Not specified"}</p>
           <p>Stars: {r.stargazers_count}</p>
         </li>
       ))}
