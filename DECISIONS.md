@@ -1,3 +1,18 @@
+## Testing
+
+1. **jsdom + `@testing-library/user-event`, not a real browser test runner (Vitest Browser Mode / PlayWright).**
+   `user-event`'s own docs recommend real-browser testing when available,
+   since jsdom doesn't perfectly replicate browser behavior. Chosen anyway:
+   reconfiguring test infrastructure was out of scope for what #5 needed, and
+   jsdom + RTL is sufficient for testing these components' actual logic
+   (prop rendering, callback firing) rather than browser-specific rendering
+   quirks.
+2. **Tested beyond #5's stated acceptance criteria:** state-priority
+   (error takes precedence over loading when both are true) and
+   null-fallback rendering (description/language) weren't explicitly listed,
+   but are real behavior in `SearchResults` worth locking in against
+   regression.
+
 ## Testing setup: Vitest + React Testing Library
 
 - Chose Vitest over Jest because it pairs natively with Vite's config - Jest would
