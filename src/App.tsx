@@ -1,23 +1,29 @@
 import { useState, useEffect } from "react";
+import { useDebounce } from "./hooks/useDebounce.ts";
 import SearchInput from "./SearchInput.tsx";
 import SearchResults from "./SearchResults.tsx";
 import type { GitHubRepo, GitHubSearchResponse } from "./types.ts";
 
 function App() {
   const [query, setQuery] = useState("");
+  const debouncedQuery = useDebounce(query, 300);
 
   const [results, setResults] = useState<GitHubRepo[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (query.trim() === "") return;
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- naive fetch-in-effect is deliberate for now
+    if (!debouncedQuery) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- naive fetch-in-effect is deliberate for now
+      setResults([]);
+      setError(null);
+      return;
+    }
     setLoading(true);
     setError(null);
 
     fetch(
-      `https://api.github.com/search/repositories?q=${encodeURIComponent(query)}`,
+      `https://api.github.com/search/repositories?q=${encodeURIComponent(debouncedQuery)}`,
     )
       .then((response) => {
         if (!response.ok)
@@ -27,7 +33,7 @@ function App() {
       .then((data) => setResults(data.items))
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-  }, [query]);
+  }, [debouncedQuery]);
 
   return (
     <>
