@@ -1,3 +1,24 @@
+## Debounce
+
+1. **`useDebounce` is a value-debouncing hook, not a callback-debouncing one.**
+   It takes a raw value and returns a delayed copy that only updates once
+   the value has stopped changing for the delay period, rather than wrapping
+   a function call. This is the more idiomatic React pattern: `SearchInput`
+   keeps updating `query` immediately on every keystroke (so typing stays
+   responsive), while a separate `debouncedQuery` lags behind and drives the
+   actual search effect.
+2. **300ms delay,** chosen as a reasonable default for search-as-you-type
+   UX - not benchmarked against this specific API, just a common baseline;
+   revisit if it feels too slow/fast in practice.
+3. **On an empty `debouncedQuery`, `results` and `error` are explicitly reset, but `loading` is deliberately left alone.**
+   Without an explicit reset, `results`/`error` would remain stale from the
+   last search - they only ever update on a **new** successful/failed fetch, so
+   nothing else clears them naturally. `loading` doesn't have this problem:
+   it always gets reset back to `false` by the in-flight fetch's own `.finally()`
+   regardless, so an explicit reset here would only shave a few hundred ms off
+   a state that isn't visibly rendered anyway (`SearchResults` isn't shown
+   while the query is empty).
+
 ## Testing
 
 1. **jsdom + `@testing-library/user-event`, not a real browser test runner (Vitest Browser Mode / PlayWright).**
