@@ -9,7 +9,7 @@ debounced search, request cancellation, and a favorites system.
 - [x] Basic search (fetch + display results)
 - [x] Test infrastructure (Vitest + React Testing Library)
 - [x] Debounce hook
-- [ ] Request cancellation (AbortController)
+- [x] Request cancellation (AbortController)
 - [ ] Performance optimization (useMemo/useCallback)
 - [ ] Favorites (Context)
 
