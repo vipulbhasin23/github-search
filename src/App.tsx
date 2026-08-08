@@ -22,8 +22,11 @@ function App() {
     setLoading(true);
     setError(null);
 
+    const controller = new AbortController();
+
     fetch(
       `https://api.github.com/search/repositories?q=${encodeURIComponent(debouncedQuery)}`,
+      { signal: controller.signal },
     )
       .then((response) => {
         if (!response.ok)
@@ -31,8 +34,16 @@ function App() {
         return response.json() as Promise<GitHubSearchResponse>;
       })
       .then((data) => setResults(data.items))
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
+      .catch((err) => {
+        if (err.name === "AbortError") return;
+        setError(err.message);
+      })
+      .finally(() => {
+        if (controller.signal.aborted) return;
+        setLoading(false);
+      });
+
+    return () => controller.abort();
   }, [debouncedQuery]);
 
   return (

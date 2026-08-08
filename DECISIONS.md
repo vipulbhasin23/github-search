@@ -1,3 +1,25 @@
+## Request Cancellation
+
+1. **Cancellation is wired via the search effect's own cleanup function, not a manually-tracked ref.**
+   A fresh `AbortController` is created inside the effect on every run; the
+   effect returns `() => controller.abort()`. React calls this automatically
+   right before the next effect run (or on unmount), so a superseded request
+   is aborted the same way `useDebounce`'s timer gets cancelled - no extra
+   state needed to track "the current controller".
+2. **`.finally` checks `controller.signal.aborted` before clearing `loading`.**
+   `.catch`/`.finally` run as microtasks, not synchronously with `abort()` - so
+   a superseded request's `.finally` can fire _after_ the new request has
+   already set `loading` back to `true`, incorrectly flipping it back to `false`
+   mid-flight. Checking this signal in `.finally` avoids this.
+3. **Testing this required the fetch mock to actually reject on abort, not just record that `abort()` was called.**
+   An early version of the test only tracked whether `controller.signal.aborted`
+   became `true`, which passed even when `.catch`'s `AbortError` handling was
+   never actually exercised - the mocked promise still resolved normally
+   regardless of the signal. The mock now listens for the signal's `abort` event
+   and rejects with a real `AbortError`, matching actual `fetch` behavior, so
+   the test genuinely proves the app ignores a cancelled request's response
+   rather than merely proving `abort()` was invoked.
+
 ## Debounce
 
 1. **`useDebounce` is a value-debouncing hook, not a callback-debouncing one.**
