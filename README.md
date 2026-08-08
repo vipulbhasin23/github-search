@@ -8,7 +8,7 @@ debounced search, request cancellation, and a favorites system.
 - [x] Project scaffolding (Vite + React + TS + ESLint)
 - [x] Basic search (fetch + display results)
 - [x] Test infrastructure (Vitest + React Testing Library)
-- [ ] Debounce hook
+- [x] Debounce hook
 - [ ] Request cancellation (AbortController)
 - [ ] Performance optimization (useMemo/useCallback)
 - [ ] Favorites (Context)
